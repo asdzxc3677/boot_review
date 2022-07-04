@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<table>
+    <tr>
+        <th>회원번호</th>
+        <th>아이디</th>
+        <th>비밀번호</th>
+        <th>이름</th>
+        <th>이메일</th>
+        <th>전화번호</th>
+        <th>프로필사진</th>
+    </tr>
+    <tr>
+        <td th:text="${member.id}"></td>
+        <td th:text="${member.memberEmail}"></td>
+        <td th:text="${member.memberPassword}"></td>
+        <td th:text="${member.memberName}"></td>
+        <td th:text="${member.memberMail}"></td>
+        <td th:text="${member.memberMobile}"></td>
+        <td><img src="@{|/upload/${member.memberProFileName}|}" width="100" height="100" alt=""></td>
+        <td><a th:onclick="memberDelete([[${member.id}]])">삭제</a></td>
+        <td><a th:onclick="memberUpdate([[${member.id}]],[[${member.memberPassword}]])">수정</a></td>
+    </tr>
+</table>
+<div id="passCheck">
+
+</div>
+<a th:onclick="bye()">회원탈퇴</a>
+</body>
+<script>
+    const bye = () => {
+
+    }
+    const memberDelete = (id) =>{
+        location.href = "/member/delete/"+id;
+    }
+    const memberUpdate = (id,db) => {
+        const passCheck = document.getElementById("passCheck");
+        passCheck.innerHTML = "<input type='text' id='memberPassword' name='memberPassword' placeholder='비밀번호'>/n" +
+            "<input type='button' onclick='memberPass()' value='비밀번호확인'>";
+    }
+    const memberPass = () =>{
+        const ps = document.getElementById("memberPassword").value;
+        const db = '[[${session.password}]]';
+        const id = '[[${session.loginId}]]';
+        if (ps === db){
+            alert("비밀번호가 일치합니다");
+            location.href = "/member/update/"+id;
+        }else {
+            alert("비밀번호가 일치하지 않습니다. ")
+        }
+    }
+</script>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script th:src="@{/js/jquery-3.6.0.min.js}"></script>
+</head>
+<body>
+<form action="/member/save" method="post" name="saveForm" enctype="multipart/form-data">
+    <input type="text" id="memberEmail" name="memberEmail" th:onblur="idCheck()" placeholder="아이디"><br>
+    <input type="password" id="memberPassword" name="memberPassword" th:onblur="isPassword()" placeholder="비밀번호"><br>
+    <input type="text" name="memberName" placeholder="이름"><br>
+    <input type="text" name="memberMail" placeholder="이메일"><br>
+    <input type="text" name="memberMobile" placeholder="전화번호"><br>
+    <input type="file" name="memberProFile" placeholder="프로필사진"><br>
+    <input type="button" th:onclick="memberSave()" value="회원가입"><br>
+</form>
+</body>
+<script th:inline="javascript">
+    const memberSave = () => {
+        saveForm.submit();
+    }
+    function isPassword() {
+        const pw = document.getElementById("memberPassword");
+        var regExp = /^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+]).{6,16}$/; // 비밀번호 정규식 작업 영문, 숫자, 특수문자 등등
+        if(regExp.test(pw.value)){
+            alert("사용가능한 비밀번호입니다.");
+        } else {
+            alert("6 ~ 16자의 영문, 숫자, 특수문자를 포함하여 입력해주세요");
+        }
+    }
+    const idCheck = () => {
+        const id = document.getElementById("memberEmail").value;
+        var regExp = /^[a-z]+[a-z0-9]{5,19}$/g;
+
+        $.ajax({
+            type: 'post',
+            url: '/member/idCheck',
+            data: {id: id},
+            dataType: 'text',
+            success: function(result){
+                if(result === "ok"){
+                    if(regExp.test(id)){
+                        alert("사용가능한 아이디입니다.");
+                    } else {
+                        alert("영문자로 시작하는 영문자 또는 숫자 6~20자를 입력해주세요");
+                    }
+                } else{
+                    alert("중복된 아이디입니다.");
+                }
+            },
+            error: function (){
+                alert("에러");
+            },
+        });
+    }
+</script>
+</html>

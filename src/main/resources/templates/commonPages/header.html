@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<th:block th:fragment="header">
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+
+    </style>
+    <div id="header">
+
+        <div th:if="${session.loginEmail}">
+            <div th:if="${session.loginEmail.toString().equals('admin')}">
+                <a href="/member/findAll">관리자모드</a>
+            </div>
+            <div>
+                <a th:onclick="boardSave()">글 작성</a>
+                <a th:onclick="memberLogout()">로그아웃</a>
+            </div>
+            <a th:onclick="memberMyPage([[${session.loginId}]])">마이페이지</a>
+
+        </div>
+        <div th:unless="${session.loginEmail}">
+            <a th:onclick="boardSave()">글 작성</a>
+            <a th:onclick="boardList()">글 목록</a>
+            <a th:onclick="memberLogin()">로그인</a>
+            <a th:onclick="memberSave()">회원가입</a>
+        </div>
+    </div>
+    <script th:inline="javascript">
+        const memberMyPage = (id) => {
+            location.href = "/member/myPage/"+id;
+        }
+        const boardList = () => {
+            location.href = "/board";
+        }
+        const memberSave = () => {
+            location.href = "/member/save-form";
+        }
+        const memberLogin = () => {
+            location.href = "/member/login-form";
+        }
+        const memberLogout = () => {
+            location.href = "/member/logout";
+        }
+        const boardSave = () => {
+            const id = [[${session.loginEmail}]];
+            console.log(id);
+            location.href = "/board/save-form";
+            if (id != null){
+                location.href = "/board/save-form";
+            } else if (id == null){
+                location.href = "/member/login-form";
+            }
+        }
+    </script>
+</th:block>
+</html>

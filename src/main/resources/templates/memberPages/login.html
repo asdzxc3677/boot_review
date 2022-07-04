@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form action="/member/login" method="post" name="loginForm">
+    <input type="text" name="memberEmail" placeholder="아이디"><br>
+    <input type="password" name="memberPassword" placeholder="비밀번호"><br>
+    <input type="button" th:onclick="memberLogin()" value="로그인"><br>
+</form>
+</body>
+<script th:inline="javascript">
+    const memberLogin = () =>{
+        loginForm.submit();
+    }
+</script>
+</html>

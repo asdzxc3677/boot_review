@@ -9,12 +9,12 @@ import com.example.boot_review.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
-import java.awt.print.Pageable;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -94,4 +94,7 @@ public class BoardService {
         return boardList;
     }
 
+    public void update(BoardDTO boardDTO) {
+        boardRepository.save(BoardEntity.entityFind(boardDTO));
+    }
 }
